@@ -18,7 +18,7 @@ static void repl() {
 }
 
 static char* readFile(const char* path) {
-  File* file = fopen(path, "rb");
+  FILE* file = fopen(path, "rb");
   if (file == NULL) {
     fprintf(stderr, "Could not open file \"%s\".\n", path);
     exit(74);
@@ -26,7 +26,7 @@ static char* readFile(const char* path) {
 
   fseek(file, 0L, SEEK_END);
   size_t fileSize = ftell(file);
-  rewine(file);
+  rewind(file);
 
   char* buffer = (char*)malloc(fileSize + 1);
   if (buffer == NULL) {
@@ -39,7 +39,7 @@ static char* readFile(const char* path) {
     fprintf(stderr, "Could not read file \"%s\".\n", path);
     exit(74);
   }
-  bytes[bytesRead] = '\0';
+  buffer[bytesRead] = '\0';
 
   fclose(file);
   return buffer;
