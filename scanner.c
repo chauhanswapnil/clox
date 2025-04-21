@@ -54,13 +54,12 @@ static bool match(char expected) {
   return true;
 }
 
-static Token makeToken(TokenType token) {
+static Token makeToken(TokenType type) {
   Token token;
-  token.type = token;
+  token.type = type;
   token.start = scanner.start;
   token.length = (int)(scanner.current - scanner.start);
   token.line = scanner.line;
-
   return token;
 }
 
@@ -101,16 +100,16 @@ static void skipWhitespace() {
   }
 }
 
-static Token checkKeyword(int start, int length,
+static TokenType checkKeyword(int start, int length,
     const char* rest, TokenType type) {
   if (scanner.current - scanner.start == start + length &&
       memcmp(scanner.start + start, rest, length) == 0) {
-    return makeToken(type);
+    return type;
   }
-  return makeToken(TOKEN_IDENTIFIER);
+  return TOKEN_IDENTIFIER;
 }
 
-static Token identifierType() {
+static TokenType identifierType() {
   switch (scanner.start[0]) {
     case 'a': return checkKeyword(1, 2, "nd", TOKEN_AND);
     case 'c': return checkKeyword(1, 4, "lass", TOKEN_CLASS);
@@ -180,6 +179,7 @@ Token scanToken() {
   scanner.start = scanner.current;
 
   if (isAtEnd()) return makeToken(TOKEN_EOF);
+  char c = advance();
   if (isAlpha(c)) return identifier();
   if (isDigit(c)) return number();
 
