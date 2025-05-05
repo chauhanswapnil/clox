@@ -5,6 +5,9 @@
 #include "common.h"
 #include "compiler.h"
 #include "scanner.h"
+#ifdef DEBUG_PRINT_CODE
+#include "debug.h"
+#endif
 
 typedef struct {
   Token current;
@@ -114,6 +117,11 @@ static void emitConstant(Value value) {
 
 static void endCompiler() {
   emitReturn();
+  #ifdef DEBUG_PRINT_CODE
+  if (!parser.hadError) {
+    disassembleChunk(currentChunk(), "code");
+  }
+  #endif
 }
 
 static void expression();
