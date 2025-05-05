@@ -43,6 +43,7 @@ cmake --build build
 ```
 
 ## 📂 Project Structure
+```
 ├── CMakeLists.txt     # Build configuration
 ├── Makefile           # Make targets for easier builds
 ├── main.c             # Entry point
@@ -54,3 +55,4 @@ cmake --build build
 ├── compiler.*         # Compiler frontend
 ├── scanner.*          # Tokenizer
 └── README.md          # You're here!
+```
