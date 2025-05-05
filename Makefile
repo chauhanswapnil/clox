@@ -1,23 +1,27 @@
-.PHONY: all build run clean rebuild release
+BUILD_DIR := build
+SRC := $(shell find . -name '*.c' -o -name '*.h')
 
-all: build
+.PHONY: all run clean rebuild release autoformat lint
 
-build:
-	cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
-	cmake --build build
+all:
+	cmake -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=Debug
+	cmake --build $(BUILD_DIR)
 
-run: build
-	./build/clox
-
-rebuild:
-	rm -rf build
-	cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
-	cmake --build build
-
-release:
-	rm -rf build
-	cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-	cmake --build build
+run: all
+	./$(BUILD_DIR)/clox
 
 clean:
-	rm -rf build
+	rm -rf $(BUILD_DIR)
+
+rebuild: clean all
+
+release:
+	cmake -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=Release
+	cmake --build $(BUILD_DIR)
+
+autoformat:
+	clang-format -i $(SRC)
+
+lint:
+	@echo "🧼 Checking formatting with clang-format..."
+	@clang-format --dry-run --Werror $(SRC)
