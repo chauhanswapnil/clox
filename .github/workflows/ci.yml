@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [release]
+  pull_request:
+    branches: [release]
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🛠️ Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y clang clang-format cmake make gcc
+
+      - name: 🧼 Check formatting and lint
+        run: make lint
+
+      - name: 🔧 Build (Debug)
+        run: make
