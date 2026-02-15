@@ -18,6 +18,8 @@ add_executable(clox
     vm.c
     compiler.c
     scanner.c
+        object.h
+        object.c
 )
 
 # Group headers for IDEs
