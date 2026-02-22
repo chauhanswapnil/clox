@@ -18,10 +18,10 @@ add_executable(clox
     vm.c
     compiler.c
     scanner.c
-        object.h
-        object.c
-        table.h
-        table.c
+    object.h
+    object.c
+    table.h
+    table.c
 )
 
 # Group headers for IDEs
@@ -39,6 +39,10 @@ target_sources(clox PRIVATE
 # Enable compiler warnings
 if (CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
     target_compile_options(clox PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(clox PRIVATE DEBUG_TRACE_EXECUTION DEBUG_PRINT_CODE)
 endif()
 
 # Export compile_commands.json for tooling

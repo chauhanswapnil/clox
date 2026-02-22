@@ -1,19 +1,19 @@
 BUILD_DIR := build
 SRC := $(shell find . -name '*.c' -o -name '*.h')
 
-.PHONY: all run clean rebuild release autoformat lint
+.PHONY: debug run clean rebuild release autoformat lint
 
-all:
+debug:
 	cmake -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=Debug
 	cmake --build $(BUILD_DIR)
 
-run: all
+run:
 	./$(BUILD_DIR)/clox
 
 clean:
 	rm -rf $(BUILD_DIR)
 
-rebuild: clean all
+rebuild: clean debug
 
 release:
 	cmake -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=Release
